@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; display: grid; place-items: center; height: 100vh; margin: 0; background: #f0f0f0; }
+    .calculator { background: #222; padding: 20px; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,.2); }
+    .display { width: 260px; height: 40px; text-align: right; font-size: 32px; padding: 4px 8px; border-radius: 6px; }
+    .buttons { display: grid; grid-template-columns: repeat(4, 60px); grid-gap: 8px; margin-top: 10px; }
+    button { height: 60px; font-size: 20px; border-radius: 6px; border: none; background: #fff; cursor: pointer; }
+    button.operator { background: #f7931a; color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="calculator" id="calc">
+    <input class="display" id="display" type="text" value="0" readonly />
+    <div class="buttons">
+      <button>7</button><button>8</button><button>9</button><button>÷</button>
+      <button>4</button><button>5</button><button>6</button><button>×</button>
+      <button>1</button><button>2</button><button>3</button><button>−</button>
+      <button>0</button><button>.</button><button>=</button><button>+</button>
+    </div>
+  </div>
+  <script>
+    // Minimal calculator logic for demonstration
+    let current = "0";
+    const display = document.getElementById('display');
+    const buttons = Array.from(document.querySelectorAll('.buttons button'));
+    buttons.forEach(b => b.addEventListener('click', () => {
+      const val = b.textContent;
+      if (/[0-9.]/.test(val)) {
+        current = current === '0' ? val : current + val;
+        display.value = current;
+      } else if (val === '=') {
+        try { display.value = eval(current); current = display.value; } catch(e) { display.value = 'Error'; current = '0'; }
+      } else {
+        // simplistic operator handling
+        current = (current === '0' ? '' : current) + ' ' + val + ' ';
+      }
+    }));
+  </script>
+</body>
+</html>
